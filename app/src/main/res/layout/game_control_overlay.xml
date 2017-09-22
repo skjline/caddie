@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.skjline.caddie.activity.ScoreActivity"
+    tools:showIn="@layout/activity_score">
+
+
+    <TextView
+        android:id="@+id/tv_stroke_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_parent_border_alignment"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:shadowColor="@color/text_shadow_color"
+        android:shadowDx="@integer/text_shadow_x_delta"
+        android:shadowDy="@integer/text_shadow_y_delta"
+        android:shadowRadius="@integer/text_shadow_radius"
+        android:text="@string/app_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_distance_forward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_view_spacing"
+        android:layout_marginLeft="@dimen/default_parent_border_alignment"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        app:layout_constraintTop_toBottomOf="@id/tv_stroke_count"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_distance_backward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_view_spacing"
+        android:layout_marginLeft="@dimen/default_parent_border_alignment"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        app:layout_constraintTop_toBottomOf="@id/tv_distance_forward"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_longitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_parent_border_alignment"
+        android:layout_marginBottom="@dimen/default_parent_border_alignment"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_latitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_parent_border_alignment"
+        android:layout_marginBottom="@dimen/default_view_spacing"
+        app:layout_constraintBottom_toTopOf="@id/tv_longitude"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+
+    <Button
+        android:id="@+id/btn_hole_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hole_out"
+        android:layout_marginRight="@dimen/default_parent_border_alignment"
+        android:layout_marginBottom="@dimen/default_parent_border_alignment"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/btn_drop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/drop_label"
+        android:layout_marginRight="@dimen/default_parent_border_alignment"
+        android:layout_marginBottom="@dimen/default_view_spacing"
+        app:layout_constraintBottom_toTopOf="@id/btn_hole_out"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/btn_stroke"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stroke_label"
+        android:layout_marginRight="@dimen/default_parent_border_alignment"
+        android:layout_marginBottom="@dimen/default_view_spacing"
+        app:layout_constraintBottom_toTopOf="@id/btn_drop"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>

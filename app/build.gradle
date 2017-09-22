@@ -1,0 +1,73 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
+    defaultConfig {
+        applicationId "com.skjline.caddie"
+        minSdkVersion 23
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+//    compile fileTree(dir: 'libs', include: ['*.jar'])
+//
+//    compile "com.android.support:design:26.0.2"
+//    compile "com.android.support:appcompat-v7:$android.buildToolsVersion"
+//    compile "com.android.support:recyclerview-v7:$android.buildToolsVersion"
+//    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+//
+//    compile 'com.google.android.gms:play-services-maps:11.0.4'
+//
+//
+//    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+//
+//
+//    kapt 'com.google.dagger:dagger-compiler:2.5'
+//    compile 'com.google.dagger:dagger:2.5'
+//
+//
+//    testCompile 'junit:junit:4.12'
+//    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+//        exclude group: 'com.android.support', module: 'support-annotations'
+//    })
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile "com.android.support:design:26.0.2"
+    compile "com.android.support:appcompat-v7:$android.buildToolsVersion"
+    compile "com.android.support:recyclerview-v7:$android.buildToolsVersion"
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    compile 'com.google.android.gms:play-services-maps:11.0.4'
+
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+
+    compile 'io.reactivex.rxjava2:rxkotlin:2.1.0'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+    compile 'com.google.dagger:dagger:2.5'
+    kapt 'com.google.dagger:dagger-compiler:2.5'
+
+
+    testCompile 'junit:junit:4.12'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+}

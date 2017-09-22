@@ -1,0 +1,11 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="default_view_spacing">8dp</dimen>
+    <dimen name="default_parent_border_alignment">24dp</dimen>
+
+    <dimen name="stroke_counter_label">32sp</dimen>
+
+    <integer name="text_shadow_x_delta">2</integer>
+    <integer name="text_shadow_y_delta">2</integer>
+    <integer name="text_shadow_radius">1</integer>
+</resources>
