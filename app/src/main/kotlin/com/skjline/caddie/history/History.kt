@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.skjline.caddie.App
 import com.skjline.caddie.common.Base
-import com.skjline.caddie.model.Stroke
 
 /**
  * Created on 8/29/17.
@@ -22,9 +21,6 @@ class History : Base() {
 
     override fun onResume() {
         super.onResume()
-
-        val obj = Stroke()
-        triggerEvent(obj)
     }
 
     companion object {
