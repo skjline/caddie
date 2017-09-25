@@ -7,6 +7,7 @@ import android.util.SparseArray
  */
 data class Hole (val holeNo: Int, var par: Int) {
     val strokes: SparseArray<Stroke> = SparseArray()
+    var distance: Int? = 0
 
     constructor(builder: Builder):
             this(holeNo = builder.holeNo, par = builder.par)
