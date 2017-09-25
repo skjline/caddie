@@ -1,10 +1,11 @@
 package com.skjline.caddie.model
 
+import android.arch.persistence.room.Room
 import android.content.Context
-import android.location.Location
 import android.location.LocationManager
 import com.skjline.caddie.App
-import com.skjline.caddie.utils.FragmentRouter
+import com.skjline.caddie.common.Const
+import com.skjline.caddie.database.StrokeDatabase
 import com.skjline.caddie.utils.ScopeQaulifier
 import dagger.Module
 import dagger.Provides
@@ -16,14 +17,15 @@ import javax.inject.Singleton
 
 @Module
 class AppModule(val app: App) {
-    @Provides
-    @Singleton
+    @Provides @Singleton
     @ScopeQaulifier
     fun provideApp() = app
 
-    @Provides
-    @Singleton
-    fun provideLocationManager(): LocationManager {
-        return app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-    }
+    @Provides @Singleton
+    fun provideLocationManager() =
+            app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+    @Provides @Singleton
+    fun providerStrokeDatabase() =
+            Room.databaseBuilder(app, StrokeDatabase::class.java, Const.DATABASE_NAME).build()
 }

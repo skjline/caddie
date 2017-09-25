@@ -1,5 +1,6 @@
-package com.skjline.caddie
+package com.skjline.caddie.injectors
 
+import com.skjline.caddie.App
 import com.skjline.caddie.activity.ScoreActivity
 import com.skjline.caddie.game.fragment.Game
 import com.skjline.caddie.history.History
@@ -16,6 +17,7 @@ import javax.inject.Singleton
 @Component(modules = arrayOf(AppModule::class, FragmentRouter::class))
         interface AppComponent {
     fun inject(app: App)
+
     fun inject(activity: ScoreActivity)
 
     fun inject(fragment: Game)
