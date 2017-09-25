@@ -32,20 +32,20 @@ class DatabasePresenter(val database: StrokeDatabase) {
 
     fun createGameSession(): Observable<Round> {
         return Observable.fromCallable {
-            Callable { ->
+            Callable {
                 val session = Round("Course")
 
                 database.roundDao().insertRound(session)
-                return@Callable session
+                session
             }.call()
         }.subscribeOn(Schedulers.io())
     }
 
     fun insertStroke(stroke: Stroke) {
         Observable.fromCallable {
-            Callable { ->
+            Callable {
                 database.strokeDao().insertStroke(stroke)
-                return@Callable stroke.strokeId
+                stroke.strokeId
             }.call()
         }.subscribeOn(Schedulers.io())
                 .subscribe { s ->
