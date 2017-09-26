@@ -4,7 +4,7 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import com.skjline.caddie.common.Const
-import com.skjline.caddie.model.Stroke
+import com.skjline.caddie.common.model.Stroke
 import io.reactivex.Single
 
 

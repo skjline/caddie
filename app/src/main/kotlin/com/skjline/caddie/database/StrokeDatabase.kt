@@ -2,8 +2,8 @@ package com.skjline.caddie.database
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
-import com.skjline.caddie.model.Round
-import com.skjline.caddie.model.Stroke
+import com.skjline.caddie.common.model.Round
+import com.skjline.caddie.common.model.Stroke
 
 
 /**

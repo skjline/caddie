@@ -1,4 +1,4 @@
-package com.skjline.caddie.model
+package com.skjline.caddie.common.model
 
 import android.util.SparseArray
 

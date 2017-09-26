@@ -3,7 +3,7 @@ package com.skjline.caddie.database
 import android.arch.persistence.room.Room
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
-import com.skjline.caddie.model.Stroke
+import com.skjline.caddie.common.model.Stroke
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

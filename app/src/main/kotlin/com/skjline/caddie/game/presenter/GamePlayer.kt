@@ -1,8 +1,8 @@
 package com.skjline.caddie.game.presenter
 
+import com.skjline.caddie.common.model.Hole
+import com.skjline.caddie.common.model.Stroke
 import com.skjline.caddie.game.controller.HoleViewController
-import com.skjline.caddie.model.Hole
-import com.skjline.caddie.model.Stroke
 
 /**
  * Created on 9/14/17.

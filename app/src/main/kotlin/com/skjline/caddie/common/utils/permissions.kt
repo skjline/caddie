@@ -1,4 +1,4 @@
-package com.skjline.caddie.utils
+package com.skjline.caddie.common.utils
 
 import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat

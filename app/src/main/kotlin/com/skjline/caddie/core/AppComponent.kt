@@ -1,11 +1,11 @@
-package com.skjline.caddie.injectors
+package com.skjline.caddie.core
 
 import com.skjline.caddie.App
-import com.skjline.caddie.activity.ScoreActivity
+import com.skjline.caddie.common.model.AppModule
+import com.skjline.caddie.common.utils.FragmentRouter
+import com.skjline.caddie.core.activity.ScoreActivity
 import com.skjline.caddie.game.fragment.Game
 import com.skjline.caddie.history.History
-import com.skjline.caddie.model.AppModule
-import com.skjline.caddie.utils.FragmentRouter
 import dagger.Component
 import javax.inject.Singleton
 

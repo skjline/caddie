@@ -6,7 +6,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.skjline.caddie.R
 import com.skjline.caddie.common.ViewController
-import com.skjline.caddie.utils.bind
+import com.skjline.caddie.common.utils.bind
 
 /**
  * Created on 9/9/17.

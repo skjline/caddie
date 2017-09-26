@@ -1,4 +1,4 @@
-package com.skjline.caddie.model
+package com.skjline.caddie.common.model
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey

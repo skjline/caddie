@@ -1,4 +1,4 @@
-package com.skjline.caddie.utils
+package com.skjline.caddie.common.utils
 
 import java.text.DecimalFormat
 

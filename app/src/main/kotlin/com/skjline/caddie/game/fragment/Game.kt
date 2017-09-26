@@ -10,10 +10,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.skjline.caddie.App
 import com.skjline.caddie.R
 import com.skjline.caddie.common.Base
+import com.skjline.caddie.common.model.Stroke
 import com.skjline.caddie.database.StrokeDatabase
 import com.skjline.caddie.game.controller.HoleViewController
 import com.skjline.caddie.game.controller.MapViewController
-import com.skjline.caddie.model.Stroke
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject

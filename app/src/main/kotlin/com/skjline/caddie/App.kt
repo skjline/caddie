@@ -1,9 +1,9 @@
 package com.skjline.caddie
 
 import android.app.Application
-import com.skjline.caddie.injectors.AppComponent
-import com.skjline.caddie.injectors.DaggerAppComponent
-import com.skjline.caddie.model.AppModule
+import com.skjline.caddie.common.model.AppModule
+import com.skjline.caddie.core.AppComponent
+import com.skjline.caddie.core.DaggerAppComponent
 
 /**
  * Created on 8/31/17.

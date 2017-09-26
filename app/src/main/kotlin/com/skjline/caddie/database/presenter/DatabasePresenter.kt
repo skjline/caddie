@@ -1,10 +1,10 @@
-package com.skjline.caddie.presenter
+package com.skjline.caddie.database.presenter
 
 import android.text.TextUtils
 import android.util.Log
+import com.skjline.caddie.common.model.Round
+import com.skjline.caddie.common.model.Stroke
 import com.skjline.caddie.database.StrokeDatabase
-import com.skjline.caddie.model.Round
-import com.skjline.caddie.model.Stroke
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers

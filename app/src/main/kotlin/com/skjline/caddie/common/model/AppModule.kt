@@ -1,12 +1,12 @@
-package com.skjline.caddie.model
+package com.skjline.caddie.common.model
 
 import android.arch.persistence.room.Room
 import android.content.Context
 import android.location.LocationManager
 import com.skjline.caddie.App
 import com.skjline.caddie.common.Const
+import com.skjline.caddie.common.utils.ScopeQaulifier
 import com.skjline.caddie.database.StrokeDatabase
-import com.skjline.caddie.utils.ScopeQaulifier
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
