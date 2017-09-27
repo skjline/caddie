@@ -58,7 +58,7 @@ class MapViewController(private val map: GoogleMap) : ViewController {
 
             val option = MarkerOptions()
             with(option) {
-//                anchor(- bitmap.width.toFloat() / 2, - bitmap.height.toFloat() / 2)
+                anchor(0.5f, 0.5f)
                 position(LatLng(geo.latitude, geo.longitude))
                 icon(BitmapDescriptorFactory.fromBitmap(bitmap))
             }
