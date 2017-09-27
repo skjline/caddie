@@ -65,8 +65,8 @@ class Game : Base() {
             triggerEvent("map activated")
             mapViewController = MapViewController(googleMap)
             mapViewController.initializeMap(activity, locationManager)
+            mapViewController.setPostionUpdateListener(holeController)
         }
-
     }
 
 

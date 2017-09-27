@@ -5,13 +5,15 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.skjline.caddie.R
+import com.skjline.caddie.common.Const
 import com.skjline.caddie.common.ViewController
 import com.skjline.caddie.common.utils.bind
+import com.skjline.caddie.common.utils.digitFormat
 
 /**
  * Created on 9/9/17.
  */
-class HoleViewController(host: View) : ViewController {
+class HoleViewController(host: View) : ViewController, MapViewController.OnPositionUpdated {
 
     val tvStroke by host.bind<TextView>(R.id.tv_stroke_count)
     val tvLat by host.bind<TextView>(R.id.tv_latitude)
@@ -26,8 +28,11 @@ class HoleViewController(host: View) : ViewController {
     val btnHoleOut by host.bind<Button>(R.id.btn_hole_out)
 
     val listener = View.OnClickListener {
-        tvStroke.text = "${Integer.parseInt(tvStroke.text.toString()) + 1}"
+        val count = Integer.parseInt(tvStroke.text.toString()) + 1
+        tvStroke.text = "$count"
     }
+
+    var ref: Location? = null
 
     init {
         tvStroke.text = "0"
@@ -39,7 +44,16 @@ class HoleViewController(host: View) : ViewController {
         })
     }
 
-    fun onPositionUpdated(location: Location) {
+    override fun onPositionUpdated(type: Int, location: Location) {
+        if (type == Const.POSITION_REF) {
+            ref = location
+        }
 
+        val pos = ref ?: return
+
+        val dist = pos.distanceTo(location).toDouble()
+        val yards = dist.times(1.0936133)
+
+        tvDistanceNext.text = "${dist.digitFormat(2)} meters ${yards.digitFormat(2)} yards"
     }
 }

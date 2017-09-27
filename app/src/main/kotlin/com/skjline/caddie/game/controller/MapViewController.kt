@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.location.Location
 import android.location.LocationManager
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -13,9 +14,11 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.skjline.caddie.R
+import com.skjline.caddie.common.Const
 import com.skjline.caddie.common.ViewController
 import com.skjline.caddie.game.presenter.LocationHandler
 import com.skjline.caddie.game.presenter.LocationPresenter
+import io.reactivex.Observable
 
 /**
  * Created on 9/15/17.
@@ -26,6 +29,15 @@ class MapViewController(private val map: GoogleMap) : ViewController {
     lateinit var location: LocationPresenter
 
     var anchor: Location? = null
+    var listener: OnPositionUpdated? = null
+
+    fun setPostionUpdateListener(l : OnPositionUpdated) {
+        listener?.let {
+            // already set
+            Log.d(MapViewController::class.java.simpleName,
+                    "Overwriting an existing listener")
+        } ?: run { listener = l }
+    }
 
     fun initializeMap(context: Context, lm: LocationManager) {
         map.setMinZoomPreference(10f)
@@ -42,6 +54,8 @@ class MapViewController(private val map: GoogleMap) : ViewController {
                             .target(LatLng(loc.latitude, loc.longitude))
                             .zoom(17f)
                             .build()))
+
+            listener?.onPositionUpdated(Const.Companion.POSITION_REF, loc)
         }
 
         map.setOnCameraMoveListener {
@@ -49,10 +63,7 @@ class MapViewController(private val map: GoogleMap) : ViewController {
             geo.latitude = map.cameraPosition.target.latitude
             geo.longitude = map.cameraPosition.target.longitude
 
-            val dist = geo.distanceTo(anchor).toDouble()
-            val yards = dist * 1.0936133
-
-//            tvDistanceNext.text = "${dist.digitFormat(2)} meters ${yards.digitFormat(2)} yards"
+            listener?.onPositionUpdated(Const.Companion.POSITION_MAP, geo)
 
             map.clear()
 
@@ -68,7 +79,17 @@ class MapViewController(private val map: GoogleMap) : ViewController {
 
     }
 
-    fun takeLocationSnapShot() : Location {
+    fun locationProvider(): Observable<Location> {
+        return Observable.create({ emitter ->
+            val geo = Location(LocationManager.GPS_PROVIDER)
+            geo.latitude = map.cameraPosition.target.latitude
+            geo.longitude = map.cameraPosition.target.longitude
+
+            emitter.onNext(geo)
+        })
+    }
+
+    fun takeLocationSnapShot(): Location {
         val geoPosition = Location(LocationManager.GPS_PROVIDER)
         geoPosition.latitude = map.cameraPosition.target.latitude
         geoPosition.longitude = map.cameraPosition.target.longitude
@@ -87,6 +108,10 @@ class MapViewController(private val map: GoogleMap) : ViewController {
         vectorDrawable.draw(canvas)
 
         return bitmap
+    }
+
+    interface OnPositionUpdated {
+        fun onPositionUpdated(type: Int, location: Location)
     }
 }
 
