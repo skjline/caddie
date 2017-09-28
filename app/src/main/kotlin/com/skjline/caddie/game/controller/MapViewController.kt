@@ -18,7 +18,6 @@ import com.skjline.caddie.common.Const
 import com.skjline.caddie.common.ViewController
 import com.skjline.caddie.game.presenter.LocationHandler
 import com.skjline.caddie.game.presenter.LocationPresenter
-import io.reactivex.Observable
 
 /**
  * Created on 9/15/17.
@@ -28,16 +27,8 @@ class MapViewController(private val map: GoogleMap) : ViewController {
     lateinit var bitmap: Bitmap
     lateinit var location: LocationPresenter
 
-    var anchor: Location? = null
-    var listener: OnPositionUpdated? = null
-
-    fun setPostionUpdateListener(l : OnPositionUpdated) {
-        listener?.let {
-            // already set
-            Log.d(MapViewController::class.java.simpleName,
-                    "Overwriting an existing listener")
-        } ?: run { listener = l }
-    }
+    private var anchor: Location? = null
+    private var listener: OnPositionUpdated? = null
 
     fun initializeMap(context: Context, lm: LocationManager) {
         map.setMinZoomPreference(10f)
@@ -58,43 +49,45 @@ class MapViewController(private val map: GoogleMap) : ViewController {
             listener?.onPositionUpdated(Const.Companion.POSITION_REF, loc)
         }
 
-        map.setOnCameraMoveListener {
-            val geo = Location(LocationManager.GPS_PROVIDER)
-            geo.latitude = map.cameraPosition.target.latitude
-            geo.longitude = map.cameraPosition.target.longitude
-
-            listener?.onPositionUpdated(Const.Companion.POSITION_MAP, geo)
-
-            map.clear()
-
-            val option = MarkerOptions()
-            with(option) {
-                anchor(0.5f, 0.5f)
-                position(LatLng(geo.latitude, geo.longitude))
-                icon(BitmapDescriptorFactory.fromBitmap(bitmap))
-            }
-
-            map.addMarker(option)
-        }
+        map.setOnCameraMoveListener { setMapCenter() }
 
     }
 
-    fun locationProvider(): Observable<Location> {
-        return Observable.create({ emitter ->
-            val geo = Location(LocationManager.GPS_PROVIDER)
-            geo.latitude = map.cameraPosition.target.latitude
-            geo.longitude = map.cameraPosition.target.longitude
-
-            emitter.onNext(geo)
-        })
+    fun setPositionUpdateListener(l: OnPositionUpdated) {
+        listener?.let {
+            // already set
+            Log.d(MapViewController::class.java.simpleName,
+                    "Overwriting an existing listener")
+        } ?: run { listener = l }
     }
 
     fun takeLocationSnapShot(): Location {
-        val geoPosition = Location(LocationManager.GPS_PROVIDER)
-        geoPosition.latitude = map.cameraPosition.target.latitude
-        geoPosition.longitude = map.cameraPosition.target.longitude
+        val center = Location(LocationManager.GPS_PROVIDER)
+        center.latitude = map.cameraPosition.target.latitude
+        center.longitude = map.cameraPosition.target.longitude
 
-        return geoPosition
+        anchor = center
+        return center
+    }
+
+
+    private fun setMapCenter() {
+        val geo = Location(LocationManager.GPS_PROVIDER)
+        geo.latitude = map.cameraPosition.target.latitude
+        geo.longitude = map.cameraPosition.target.longitude
+
+        listener?.onPositionUpdated(Const.Companion.POSITION_MAP, geo)
+
+        map.clear()
+
+        val option = MarkerOptions()
+        with(option) {
+            anchor(0.5f, 0.5f)
+            position(LatLng(geo.latitude, geo.longitude))
+            icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+        }
+
+        map.addMarker(option)
     }
 
     private fun bitmapDescriptorFromVector(context: Context, res: Int): Bitmap {
