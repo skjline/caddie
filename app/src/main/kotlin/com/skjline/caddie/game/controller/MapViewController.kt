@@ -22,7 +22,7 @@ import com.skjline.caddie.common.utils.getCameraCenter
 import com.skjline.caddie.database.StrokeDatabase
 import com.skjline.caddie.game.presenter.LocationHandler
 import com.skjline.caddie.game.presenter.LocationPresenter
-import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -35,7 +35,16 @@ class MapViewController(private val map: GoogleMap) : ViewController {
     lateinit var location: LocationPresenter
 
     private var anchor: Location? = null
-    private var listener: OnPositionUpdated? = null
+    var listener: OnPositionUpdated? = null
+        set(value) {
+            listener?.let {
+                Log.d(MapViewController::class.java.simpleName,
+                        "an existing listener will be overwritten")
+            }
+
+            listener = value
+        }
+
 
     @Inject
     lateinit var database: StrokeDatabase
@@ -67,21 +76,14 @@ class MapViewController(private val map: GoogleMap) : ViewController {
 
     }
 
-    fun setPositionUpdateListener(l: OnPositionUpdated) {
-        listener?.let {
-            // already set
-            Log.d(MapViewController::class.java.simpleName,
-                    "Overwriting an existing listener")
-        } ?: run { listener = l }
-    }
-
-    fun takeLocationSnapShot(count: Int): Observable<Stroke> {
+    fun takeLocationSnapShot(stroke: Stroke): Single<Stroke> {
         anchor = map.getCameraCenter()
 
-        return Observable.fromCallable {
-            val stroke = Stroke(0, count, false, anchor?.latitude!!, anchor?.longitude!!)
-            database.strokeDao().insertStroke(stroke)
-            stroke
+        val s = Stroke(stroke.hole, stroke.stroke, stroke.penalty, anchor?.latitude!!, anchor?.longitude!!)
+
+        return Single.fromCallable {
+            database.strokeDao().insertStroke(s)
+            s
         }.subscribeOn(Schedulers.io())
     }
 

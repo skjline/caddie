@@ -7,45 +7,51 @@ import android.widget.TextView
 import com.skjline.caddie.R
 import com.skjline.caddie.common.Const
 import com.skjline.caddie.common.ViewController
+import com.skjline.caddie.common.model.Stroke
 import com.skjline.caddie.common.utils.bind
 import com.skjline.caddie.common.utils.digitFormat
 import com.skjline.caddie.common.utils.toLocation
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 /**
  * Created on 9/9/17.
  */
 class HoleViewController(host: View) : ViewController, MapViewController.OnPositionUpdated {
 
-    val tvStroke by host.bind<TextView>(R.id.tv_stroke_count)
-    val tvLat by host.bind<TextView>(R.id.tv_latitude)
-    val tvLng by host.bind<TextView>(R.id.tv_longitude)
+    private val tvStroke by host.bind<TextView>(R.id.tv_stroke_count)
+    private val tvLat by host.bind<TextView>(R.id.tv_latitude)
+    private val tvLng by host.bind<TextView>(R.id.tv_longitude)
 
-    val tvDistanceNext by host.bind<TextView>(R.id.tv_distance_forward)
-    val tvDistancePrev by host.bind<TextView>(R.id.tv_distance_backward)
+    private val tvDistanceNext by host.bind<TextView>(R.id.tv_distance_forward)
+    private val tvDistancePrev by host.bind<TextView>(R.id.tv_distance_backward)
 
 
-    val btnStroke by host.bind<Button>(R.id.btn_stroke)
-    val btnDrop by host.bind<Button>(R.id.btn_drop)
-    val btnHoleOut by host.bind<Button>(R.id.btn_hole_out)
+    private val btnStroke by host.bind<Button>(R.id.btn_stroke)
+    private val btnDrop by host.bind<Button>(R.id.btn_drop)
+    private val btnHoleOut by host.bind<Button>(R.id.btn_hole_out)
 
-    var ref: Location? = null
-
+    private var ref: Location? = null
     var presenter: MapViewController? = null
         set(value) {
-            presenter?.setPositionUpdateListener(this)
+            field?.listener = this
         }
 
-    val listener = View.OnClickListener {
+    private val listener = View.OnClickListener { btn ->
         val count = Integer.parseInt(tvStroke.text.toString()) + 1
         tvStroke.text = "$count"
 
-        presenter?.takeLocationSnapShot(count)?.subscribe { s ->
-            onPositionUpdated(Const.POSITION_REF, s.toLocation())
+        val stroke = Stroke(0, count, btn.id == R.id.btn_drop, 0.0, 0.0)
+
+        presenter?.let {
+            it.takeLocationSnapShot(stroke)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { s ->
+                        onPositionUpdated(Const.POSITION_REF, s.toLocation())
+                    }
         }
     }
 
     init {
-
         tvStroke.text = "0"
 
         btnStroke.setOnClickListener(listener)
@@ -54,6 +60,7 @@ class HoleViewController(host: View) : ViewController, MapViewController.OnPosit
             tvStroke.text = "0"
         })
     }
+
 
     override fun onPositionUpdated(type: Int, location: Location) {
         if (type == Const.POSITION_REF) {
