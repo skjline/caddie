@@ -9,6 +9,7 @@ import com.skjline.caddie.common.Const
 import com.skjline.caddie.common.ViewController
 import com.skjline.caddie.common.utils.bind
 import com.skjline.caddie.common.utils.digitFormat
+import com.skjline.caddie.common.utils.toLocation
 
 /**
  * Created on 9/9/17.
@@ -28,16 +29,23 @@ class HoleViewController(host: View) : ViewController, MapViewController.OnPosit
     val btnHoleOut by host.bind<Button>(R.id.btn_hole_out)
 
     var ref: Location? = null
+
     var presenter: MapViewController? = null
+        set(value) {
+            presenter?.setPositionUpdateListener(this)
+        }
 
     val listener = View.OnClickListener {
         val count = Integer.parseInt(tvStroke.text.toString()) + 1
         tvStroke.text = "$count"
 
-        onPositionUpdated(Const.POSITION_REF, presenter?.takeLocationSnapShot()!!)
+        presenter?.takeLocationSnapShot(count)?.subscribe { s ->
+            onPositionUpdated(Const.POSITION_REF, s.toLocation())
+        }
     }
 
     init {
+
         tvStroke.text = "0"
 
         btnStroke.setOnClickListener(listener)
@@ -56,6 +64,6 @@ class HoleViewController(host: View) : ViewController, MapViewController.OnPosit
 
         val dist = pos.distanceTo(location).toDouble()
 
-        tvDistanceNext.text = "${dist.digitFormat(2)} meters ${dist.times(1.0936133).digitFormat(2)} yards"
+        tvDistanceNext.text = "${dist.digitFormat(2)} meters ${dist.times(Const.METERS_TO_YARDS).digitFormat(2)} yards"
     }
 }

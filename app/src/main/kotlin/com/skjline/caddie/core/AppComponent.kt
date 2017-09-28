@@ -4,6 +4,7 @@ import com.skjline.caddie.App
 import com.skjline.caddie.common.model.AppModule
 import com.skjline.caddie.common.utils.FragmentRouter
 import com.skjline.caddie.core.activity.ScoreActivity
+import com.skjline.caddie.game.controller.MapViewController
 import com.skjline.caddie.game.fragment.Game
 import com.skjline.caddie.history.History
 import dagger.Component
@@ -22,4 +23,6 @@ import javax.inject.Singleton
 
     fun inject(fragment: Game)
     fun inject(fragment: History)
+
+    fun inject(controller: MapViewController)
 }

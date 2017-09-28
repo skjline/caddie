@@ -13,11 +13,18 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.skjline.caddie.App
 import com.skjline.caddie.R
 import com.skjline.caddie.common.Const
 import com.skjline.caddie.common.ViewController
+import com.skjline.caddie.common.model.Stroke
+import com.skjline.caddie.common.utils.getCameraCenter
+import com.skjline.caddie.database.StrokeDatabase
 import com.skjline.caddie.game.presenter.LocationHandler
 import com.skjline.caddie.game.presenter.LocationPresenter
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 /**
  * Created on 9/15/17.
@@ -30,14 +37,21 @@ class MapViewController(private val map: GoogleMap) : ViewController {
     private var anchor: Location? = null
     private var listener: OnPositionUpdated? = null
 
-    fun initializeMap(context: Context, lm: LocationManager) {
+    @Inject
+    lateinit var database: StrokeDatabase
+    @Inject
+    lateinit var locationManager: LocationManager
+
+    fun initializeMap(context: Context) {
+        App.component.inject(this)
+
         map.setMinZoomPreference(10f)
         map.mapType = GoogleMap.MAP_TYPE_SATELLITE
         map.isMyLocationEnabled = true
 
         bitmap = bitmapDescriptorFromVector(context, R.drawable.ic_album_black_24dp)
 
-        location = LocationHandler(lm)
+        location = LocationHandler(locationManager)
         location.onPositionChanged().subscribe { loc ->
             anchor = loc
             map.animateCamera(CameraUpdateFactory.newCameraPosition(
@@ -61,21 +75,19 @@ class MapViewController(private val map: GoogleMap) : ViewController {
         } ?: run { listener = l }
     }
 
-    fun takeLocationSnapShot(): Location {
-        val center = Location(LocationManager.GPS_PROVIDER)
-        center.latitude = map.cameraPosition.target.latitude
-        center.longitude = map.cameraPosition.target.longitude
+    fun takeLocationSnapShot(count: Int): Observable<Stroke> {
+        anchor = map.getCameraCenter()
 
-        anchor = center
-        return center
+        return Observable.fromCallable {
+            val stroke = Stroke(0, count, false, anchor?.latitude!!, anchor?.longitude!!)
+            database.strokeDao().insertStroke(stroke)
+            stroke
+        }.subscribeOn(Schedulers.io())
     }
 
 
     private fun setMapCenter() {
-        val geo = Location(LocationManager.GPS_PROVIDER)
-        geo.latitude = map.cameraPosition.target.latitude
-        geo.longitude = map.cameraPosition.target.longitude
-
+        val geo = map.getCameraCenter()
         listener?.onPositionUpdated(Const.Companion.POSITION_MAP, geo)
 
         map.clear()

@@ -13,5 +13,7 @@ class Const {
 
         const val POSITION_REF = 1
         const val POSITION_MAP = 2
+
+        const val METERS_TO_YARDS = 1.0936133
     }
 }
