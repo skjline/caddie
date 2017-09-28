@@ -27,12 +27,15 @@ class HoleViewController(host: View) : ViewController, MapViewController.OnPosit
     val btnDrop by host.bind<Button>(R.id.btn_drop)
     val btnHoleOut by host.bind<Button>(R.id.btn_hole_out)
 
+    var ref: Location? = null
+    var presenter: MapViewController? = null
+
     val listener = View.OnClickListener {
         val count = Integer.parseInt(tvStroke.text.toString()) + 1
         tvStroke.text = "$count"
-    }
 
-    var ref: Location? = null
+        onPositionUpdated(Const.POSITION_REF, presenter?.takeLocationSnapShot()!!)
+    }
 
     init {
         tvStroke.text = "0"
@@ -52,8 +55,7 @@ class HoleViewController(host: View) : ViewController, MapViewController.OnPosit
         val pos = ref ?: return
 
         val dist = pos.distanceTo(location).toDouble()
-        val yards = dist.times(1.0936133)
 
-        tvDistanceNext.text = "${dist.digitFormat(2)} meters ${yards.digitFormat(2)} yards"
+        tvDistanceNext.text = "${dist.digitFormat(2)} meters ${dist.times(1.0936133).digitFormat(2)} yards"
     }
 }

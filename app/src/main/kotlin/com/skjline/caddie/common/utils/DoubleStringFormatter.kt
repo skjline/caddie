@@ -6,7 +6,7 @@ import java.text.DecimalFormat
  * Created on 9/15/17.
  */
 
-fun Double.digitFormat(digit: Int) {
+fun Double.digitFormat(digit: Int) : String {
     var format = StringBuilder("#.")
     var index = 0
 
@@ -14,5 +14,5 @@ fun Double.digitFormat(digit: Int) {
        format = format.append("0")
     }
 
-    DecimalFormat(format.toString()).format(this)
+    return DecimalFormat(format.toString()).format(this)
 }
