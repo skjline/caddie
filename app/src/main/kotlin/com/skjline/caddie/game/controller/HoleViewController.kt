@@ -33,6 +33,13 @@ class HoleViewController(host: View) : ViewController {
 
     private var ref: Location? = null
     var presenter: MapViewController? = null
+        set(value) {
+            presenter?.let {
+                it.onLocationChanged()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe { l -> onPositionUpdated(l) }
+            }
+        }
 
     private val listener = View.OnClickListener { btn ->
         val count = Integer.parseInt(tvStroke.text.toString()) + 1
@@ -44,10 +51,6 @@ class HoleViewController(host: View) : ViewController {
             it.takeLocationSnapShot(stroke)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { s -> onPositionUpdated(s.toLocation()) }
-
-            it.onLocationChanged()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { l -> onPositionUpdated(l) }
         }
     }
 
