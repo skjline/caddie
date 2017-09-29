@@ -32,9 +32,6 @@ class HoleViewController(host: View) : ViewController, MapViewController.OnPosit
 
     private var ref: Location? = null
     var presenter: MapViewController? = null
-        set(value) {
-            field?.listener = this
-        }
 
     private val listener = View.OnClickListener { btn ->
         val count = Integer.parseInt(tvStroke.text.toString()) + 1

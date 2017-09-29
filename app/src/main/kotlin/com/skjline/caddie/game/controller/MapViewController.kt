@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable
 import android.location.Location
 import android.location.LocationManager
 import android.support.v4.content.ContextCompat
-import android.util.Log
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -36,14 +35,6 @@ class MapViewController(private val map: GoogleMap) : ViewController {
 
     private var anchor: Location? = null
     var listener: OnPositionUpdated? = null
-        set(value) {
-            listener?.let {
-                Log.d(MapViewController::class.java.simpleName,
-                        "an existing listener will be overwritten")
-            }
-
-            listener = value
-        }
 
 
     @Inject
@@ -51,7 +42,7 @@ class MapViewController(private val map: GoogleMap) : ViewController {
     @Inject
     lateinit var locationManager: LocationManager
 
-    fun initializeMap(context: Context) {
+    fun initializeMap(context: Context, holeViewController: HoleViewController) {
         App.component.inject(this)
 
         map.setMinZoomPreference(10f)
@@ -59,6 +50,8 @@ class MapViewController(private val map: GoogleMap) : ViewController {
         map.isMyLocationEnabled = true
 
         bitmap = bitmapDescriptorFromVector(context, R.drawable.ic_album_black_24dp)
+
+        listener = holeViewController
 
         location = LocationHandler(locationManager)
         location.onPositionChanged().subscribe { loc ->
