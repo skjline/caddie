@@ -11,6 +11,7 @@ class Const {
         const val ROUND_TABLE = "round"
         const val STOKE_TABLE = "stroke"
 
+        const val POSITION_TYPE = "position_type"
         const val POSITION_REF = 1
         const val POSITION_MAP = 2
 

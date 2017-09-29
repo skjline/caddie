@@ -4,7 +4,6 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import android.view.View
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 
@@ -42,6 +41,6 @@ class LocationHandler(val lm: LocationManager) : LocationPresenter {
 
         location?.let { observable?.startWith(it) }
 
-        return observable ?: throw Exception("illegat state")
+        return observable ?: throw Exception("illegal state")
     }
 }

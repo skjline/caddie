@@ -5,6 +5,7 @@ import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.location.Location
 import android.location.LocationManager
+import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -15,12 +16,14 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.skjline.caddie.App
 import com.skjline.caddie.R
 import com.skjline.caddie.common.Const
+import com.skjline.caddie.common.Const.Companion.POSITION_TYPE
 import com.skjline.caddie.common.ViewController
 import com.skjline.caddie.common.model.Stroke
 import com.skjline.caddie.common.utils.getCameraCenter
 import com.skjline.caddie.database.StrokeDatabase
 import com.skjline.caddie.game.presenter.LocationHandler
 import com.skjline.caddie.game.presenter.LocationPresenter
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -34,15 +37,14 @@ class MapViewController(private val map: GoogleMap) : ViewController {
     lateinit var location: LocationPresenter
 
     private var anchor: Location? = null
-    var listener: OnPositionUpdated? = null
-
+    private var listener: OnPositionUpdated? = null
 
     @Inject
     lateinit var database: StrokeDatabase
     @Inject
     lateinit var locationManager: LocationManager
 
-    fun initializeMap(context: Context, holeViewController: HoleViewController) {
+    fun initializeMap(context: Context) {
         App.component.inject(this)
 
         map.setMinZoomPreference(10f)
@@ -50,8 +52,6 @@ class MapViewController(private val map: GoogleMap) : ViewController {
         map.isMyLocationEnabled = true
 
         bitmap = bitmapDescriptorFromVector(context, R.drawable.ic_album_black_24dp)
-
-        listener = holeViewController
 
         location = LocationHandler(locationManager)
         location.onPositionChanged().subscribe { loc ->
@@ -66,7 +66,26 @@ class MapViewController(private val map: GoogleMap) : ViewController {
         }
 
         map.setOnCameraMoveListener { setMapCenter() }
+    }
 
+    // todo: poc - need to rework this
+    fun onLocationChanged() : Observable<Location> {
+        return Observable.create<Location> { emitter ->
+            listener ?: object : OnPositionUpdated {
+                override fun onPositionUpdated(type: Int, location: Location) {
+                    if (emitter.isDisposed) {
+                        emitter.onComplete()
+                        return
+                    }
+
+                    val bundle = Bundle()
+                    bundle.putInt(POSITION_TYPE, type)
+
+                    location.extras = bundle
+                    emitter.onNext(location)
+                }
+            }
+        }.subscribeOn(Schedulers.io())
     }
 
     fun takeLocationSnapShot(stroke: Stroke): Single<Stroke> {
@@ -110,7 +129,7 @@ class MapViewController(private val map: GoogleMap) : ViewController {
         return bitmap
     }
 
-    interface OnPositionUpdated {
+    private interface OnPositionUpdated {
         fun onPositionUpdated(type: Int, location: Location)
     }
 }

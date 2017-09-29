@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.skjline.caddie.R
 import com.skjline.caddie.common.Const
+import com.skjline.caddie.common.Const.Companion.POSITION_TYPE
 import com.skjline.caddie.common.ViewController
 import com.skjline.caddie.common.model.Stroke
 import com.skjline.caddie.common.utils.bind
@@ -16,7 +17,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 /**
  * Created on 9/9/17.
  */
-class HoleViewController(host: View) : ViewController, MapViewController.OnPositionUpdated {
+class HoleViewController(host: View) : ViewController {
 
     private val tvStroke by host.bind<TextView>(R.id.tv_stroke_count)
     private val tvLat by host.bind<TextView>(R.id.tv_latitude)
@@ -42,9 +43,11 @@ class HoleViewController(host: View) : ViewController, MapViewController.OnPosit
         presenter?.let {
             it.takeLocationSnapShot(stroke)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { s ->
-                        onPositionUpdated(Const.POSITION_REF, s.toLocation())
-                    }
+                    .subscribe { s -> onPositionUpdated(s.toLocation()) }
+
+            it.onLocationChanged()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { l -> onPositionUpdated(l) }
         }
     }
 
@@ -59,8 +62,8 @@ class HoleViewController(host: View) : ViewController, MapViewController.OnPosit
     }
 
 
-    override fun onPositionUpdated(type: Int, location: Location) {
-        if (type == Const.POSITION_REF) {
+    private fun onPositionUpdated(location: Location) {
+        if (location.extras.getInt(POSITION_TYPE) == Const.POSITION_REF) {
             ref = location
         }
 

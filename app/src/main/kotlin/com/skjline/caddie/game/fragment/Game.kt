@@ -34,7 +34,7 @@ class Game : Base() {
         fragment.getMapAsync { googleMap ->
             triggerEvent("map activated")
             mapViewController = MapViewController(googleMap)
-            mapViewController.initializeMap(activity, holeController)
+            mapViewController.initializeMap(activity)
 
             holeController.presenter = mapViewController
         }
