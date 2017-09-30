@@ -16,7 +16,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.skjline.caddie.App
 import com.skjline.caddie.R
 import com.skjline.caddie.common.Const
-import com.skjline.caddie.common.Const.Companion.POSITION_TYPE
 import com.skjline.caddie.common.ViewController
 import com.skjline.caddie.common.model.Stroke
 import com.skjline.caddie.common.utils.getCameraCenter
@@ -71,7 +70,8 @@ class MapViewController(private val map: GoogleMap) : ViewController {
     // todo: poc - need to rework this
     fun onLocationChanged() : Observable<Location> {
         return Observable.create<Location> { emitter ->
-            listener ?: object : OnPositionUpdated {
+
+            listener = listener ?: object : OnPositionUpdated {
                 override fun onPositionUpdated(type: Int, location: Location) {
                     if (emitter.isDisposed) {
                         emitter.onComplete()
@@ -79,7 +79,7 @@ class MapViewController(private val map: GoogleMap) : ViewController {
                     }
 
                     val bundle = Bundle()
-                    bundle.putInt(POSITION_TYPE, type)
+                    bundle.putInt(Const.POSITION_TYPE, type)
 
                     location.extras = bundle
                     emitter.onNext(location)

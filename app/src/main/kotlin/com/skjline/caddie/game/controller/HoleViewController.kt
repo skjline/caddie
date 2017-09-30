@@ -6,7 +6,6 @@ import android.widget.Button
 import android.widget.TextView
 import com.skjline.caddie.R
 import com.skjline.caddie.common.Const
-import com.skjline.caddie.common.Const.Companion.POSITION_TYPE
 import com.skjline.caddie.common.ViewController
 import com.skjline.caddie.common.model.Stroke
 import com.skjline.caddie.common.utils.bind
@@ -33,13 +32,6 @@ class HoleViewController(host: View) : ViewController {
 
     private var ref: Location? = null
     var presenter: MapViewController? = null
-        set(value) {
-            presenter?.let {
-                it.onLocationChanged()
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe { l -> onPositionUpdated(l) }
-            }
-        }
 
     private val listener = View.OnClickListener { btn ->
         val count = Integer.parseInt(tvStroke.text.toString()) + 1
@@ -51,6 +43,10 @@ class HoleViewController(host: View) : ViewController {
             it.takeLocationSnapShot(stroke)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { s -> onPositionUpdated(s.toLocation()) }
+
+            it.onLocationChanged()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { l -> onPositionUpdated(l) }
         }
     }
 
@@ -66,7 +62,7 @@ class HoleViewController(host: View) : ViewController {
 
 
     private fun onPositionUpdated(location: Location) {
-        if (location.extras.getInt(POSITION_TYPE) == Const.POSITION_REF) {
+        if (location.extras.getInt(Const.POSITION_TYPE) == Const.POSITION_REF) {
             ref = location
         }
 

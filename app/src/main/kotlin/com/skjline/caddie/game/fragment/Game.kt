@@ -40,7 +40,6 @@ class Game : Base() {
         }
     }
 
-
     companion object {
         fun newInstance(bundle: Bundle): Game {
             val game = Game()
