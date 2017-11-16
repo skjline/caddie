@@ -1,5 +1,6 @@
 package com.skjline.caddie.game.controller
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
@@ -9,10 +10,7 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.skjline.caddie.App
 import com.skjline.caddie.R
 import com.skjline.caddie.common.Const
@@ -43,6 +41,7 @@ class MapViewController(private val map: GoogleMap) : ViewController {
     @Inject
     lateinit var locationManager: LocationManager
 
+    @SuppressLint("MissingPermission")
     fun initializeMap(context: Context) {
         App.component.inject(this)
 
@@ -111,6 +110,14 @@ class MapViewController(private val map: GoogleMap) : ViewController {
             anchor(0.5f, 0.5f)
             position(LatLng(geo.latitude, geo.longitude))
             icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+
+
+            val line =
+                    PolylineOptions()
+                            .add(LatLng(geo.latitude, geo.longitude), LatLng(anchor?.latitude!!, anchor?.longitude!!))
+                            .color(Color.RED)
+                            .width(5.0f)
+            map.addPolyline(line)
         }
 
         map.addMarker(option)

@@ -4,7 +4,7 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.skjline.caddie"
         minSdkVersion 23
@@ -17,6 +17,10 @@ android {
         main.java.srcDirs = ['src/main/kotlin']
         test.java.srcDirs = ['src/test/kotlin']
         androidTest.java.srcDirs = ['src/androidTest/kotlin']
+    }
+    packagingOptions {
+        // todo: reevaluate - bypassing kotlin_module for now
+        exclude 'META-INF/app_debug.kotlin_module'
     }
     buildTypes {
         release {
@@ -31,7 +35,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
 
-    compile 'com.google.android.gms:play-services-maps:11.0.4'
+    compile 'com.google.android.gms:play-services-maps:11.6.0'
 
     // Google/Android stuff
     compile 'com.android.support:design:26.1.0'
@@ -43,9 +47,9 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
     // Room
-    compile 'android.arch.persistence.room:runtime:1.0.0-alpha9-1'
-    compile 'android.arch.persistence.room:rxjava2:1.0.0-alpha9-1'
-    kapt "android.arch.persistence.room:compiler:1.0.0-alpha9-1"
+    compile 'android.arch.persistence.room:runtime:1.0.0'
+    compile 'android.arch.persistence.room:rxjava2:1.0.0'
+    kapt "android.arch.persistence.room:compiler:1.0.0"
 
     // RXJava
     compile 'io.reactivex.rxjava2:rxjava:2.1.3'
