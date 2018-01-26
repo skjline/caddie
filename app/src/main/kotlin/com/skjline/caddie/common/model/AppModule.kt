@@ -27,5 +27,5 @@ class AppModule(val app: App) {
 
     @Provides @Singleton
     fun providerStrokeDatabase() =
-            Room.databaseBuilder(app, StrokeDatabase::class.java, Const.DATABASE_NAME).build() as StrokeDatabase
+            Room.databaseBuilder(app, StrokeDatabase::class.java, Const.DATABASE_NAME).build()
 }

@@ -13,14 +13,9 @@ import com.skjline.caddie.common.Base
 
 class History : Base() {
 
-
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         App.component.inject(this)
         return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     companion object {

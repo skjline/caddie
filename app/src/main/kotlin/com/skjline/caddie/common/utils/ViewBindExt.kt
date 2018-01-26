@@ -26,10 +26,10 @@ fun <T : View> View.bind(@IdRes res : Int) : Lazy<T> {
 
 fun <T : View> android.support.v4.app.Fragment.findChild(@IdRes res : Int) : T {
     @Suppress("UNCHECKED_CAST")
-    return activity.findViewById(res)
+    return activity!!.findViewById(res)
 }
 
 fun <T : View> android.support.v4.app.Fragment.bind(@IdRes res : Int) : Lazy<T> {
     @Suppress("UNCHECKED_CAST")
-    return activity.bind(res)
+    return activity!!.bind(res)
 }

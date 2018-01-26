@@ -15,10 +15,8 @@ class Game : Base() {
     lateinit var holeController: HoleViewController
     lateinit var mapViewController: MapViewController
 
-    override
-    fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-
-        val view = inflater?.inflate(R.layout.game_fragment, container, false) ?: View(context.applicationContext)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.game_fragment, container, false) ?: View(context!!.applicationContext)
         holeController = HoleViewController(view)
 
         return view
@@ -34,7 +32,7 @@ class Game : Base() {
         fragment.getMapAsync { googleMap ->
             triggerEvent("map activated")
             mapViewController = MapViewController(googleMap)
-            mapViewController.initializeMap(activity)
+            mapViewController.initializeMap(activity!!.applicationContext)
 
             holeController.presenter = mapViewController
         }
