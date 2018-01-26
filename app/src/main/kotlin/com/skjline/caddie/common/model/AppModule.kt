@@ -5,7 +5,7 @@ import android.content.Context
 import android.location.LocationManager
 import com.skjline.caddie.App
 import com.skjline.caddie.common.Const
-import com.skjline.caddie.common.utils.ScopeQaulifier
+import com.skjline.caddie.common.utils.ScopeQualifier
 import com.skjline.caddie.database.StrokeDatabase
 import dagger.Module
 import dagger.Provides
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 @Module
 class AppModule(val app: App) {
     @Provides @Singleton
-    @ScopeQaulifier
+    @ScopeQualifier
     fun provideApp() = app
 
     @Provides @Singleton

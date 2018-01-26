@@ -11,17 +11,17 @@ import android.view.View
 
 fun <T : View> Activity.bind(@IdRes res : Int) : Lazy<T> {
     @Suppress("UNCHECKED_CAST")
-    return lazy(LazyThreadSafetyMode.NONE) { findViewById<T>(res) as T }
+    return lazy(LazyThreadSafetyMode.NONE) { findViewById<T>(res) }
 }
 
 fun <T : View> AppCompatActivity.bind(@IdRes res : Int) : Lazy<T> {
     @Suppress("UNCHECKED_CAST")
-    return lazy(LazyThreadSafetyMode.NONE) { findViewById<T>(res) as T }
+    return lazy(LazyThreadSafetyMode.NONE) { findViewById<T>(res) }
 }
 
 fun <T : View> View.bind(@IdRes res : Int) : Lazy<T> {
     @Suppress("UNCHECKED_CAST")
-    return lazy(LazyThreadSafetyMode.NONE) { findViewById<T>(res) as T }
+    return lazy(LazyThreadSafetyMode.NONE) { findViewById<T>(res) }
 }
 
 fun <T : View> android.support.v4.app.Fragment.findChild(@IdRes res : Int) : T {

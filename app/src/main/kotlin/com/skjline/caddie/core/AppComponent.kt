@@ -15,7 +15,7 @@ import javax.inject.Singleton
  */
 
 @Singleton
-@Component(modules = arrayOf(AppModule::class, FragmentRouter::class))
+@Component(modules = [(AppModule::class), (FragmentRouter::class)])
         interface AppComponent {
     fun inject(app: App)
 
