@@ -1,7 +1,6 @@
 package com.skjline.caddie.common.utils
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.skjline.caddie.R
 import com.skjline.caddie.game.fragment.Game
@@ -20,13 +19,18 @@ class FragmentRouter : Route {
     @Singleton
     fun provideFragmentRouter() = FragmentRouter()
 
-    override fun route(activity: AppCompatActivity, fragment: Fragment) {
+    override fun route(activity: AppCompatActivity, frag: Int) {
+        route(activity, frag, null)
+    }
+
+    override fun route(activity: AppCompatActivity, frag: Int, bundle: Bundle?) {
+        val fragment = createFragment(frag, bundle)
         activity.supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment, fragment)
                 .commit()
     }
 
-    fun createFragment(fragment: Int, bundle: Bundle = Bundle()) =
+    private fun createFragment(fragment: Int, bundle: Bundle?) =
             when (fragment) {
                 R.layout.game_fragment -> Game.newInstance(bundle)
                 R.layout.hole_score_list -> History.newInstance(bundle)
@@ -36,5 +40,6 @@ class FragmentRouter : Route {
 }
 
 interface Route {
-    fun route(activity: AppCompatActivity, fragment: Fragment)
+    fun route(activity: AppCompatActivity, fragment: Int)
+    fun route(activity: AppCompatActivity, fragment: Int, bundle: Bundle?)
 }

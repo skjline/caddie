@@ -16,15 +16,16 @@ class Game : Base() {
     lateinit var mapViewController: MapViewController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.game_fragment, container, false) ?: View(context!!.applicationContext)
-        holeController = HoleViewController(view)
+        return inflater.inflate(R.layout.game_fragment, container, false)
+    }
 
-        return view
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        holeController = HoleViewController(view)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
 
         val fragment = childFragmentManager
                 .findFragmentById(R.id.support_google_map) as SupportMapFragment
@@ -39,10 +40,12 @@ class Game : Base() {
     }
 
     companion object {
-        fun newInstance(bundle: Bundle): Game {
+        fun newInstance(bundle: Bundle?): Game {
             val game = Game()
-            game.arguments = bundle
 
+            bundle?.let {
+                game.arguments = it
+            }
             return game
         }
     }

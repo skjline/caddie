@@ -11,7 +11,6 @@ import com.skjline.caddie.common.model.Stroke
 import com.skjline.caddie.common.utils.bind
 import com.skjline.caddie.common.utils.digitFormat
 import com.skjline.caddie.common.utils.toLocation
-import io.reactivex.android.schedulers.AndroidSchedulers
 
 /**
  * Created on 9/9/17.
@@ -40,12 +39,12 @@ class HoleViewController(host: View) : ViewController {
         val stroke = Stroke(0, count, btn.id == R.id.btn_drop, 0.0, 0.0)
 
         presenter?.let {
-            it.takeLocationSnapShot(stroke)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { s -> onPositionUpdated(s.toLocation()) }
-
             it.onLocationChanged()
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .mergeWith(it.takeLocationSnapShot(stroke)
+                            .toObservable()
+                            .map { stroke ->
+                                stroke.toLocation()
+                            })
                     .subscribe { l -> onPositionUpdated(l) }
         }
     }

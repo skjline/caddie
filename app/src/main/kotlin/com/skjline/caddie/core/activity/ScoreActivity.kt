@@ -63,7 +63,7 @@ class ScoreActivity : AppCompatActivity() {
         super.onResume()
 
         if (hasPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            router.route(this, router.createFragment(R.layout.game_fragment))
+            router.route(this, R.layout.game_fragment)
             return
         }
 
@@ -79,7 +79,7 @@ class ScoreActivity : AppCompatActivity() {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
 
-                    router.route(this, router.createFragment(R.layout.game_fragment))
+                    router.route(this, R.layout.game_fragment)
                 } else {
 
                     // permission denied, boo! Disable the
