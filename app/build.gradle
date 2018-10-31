@@ -45,6 +45,8 @@ dependencies {
 
     // to resolve lint error for design 28.0
     implementation 'com.android.support:support-v4:28.0.0'
+    // missing android.support.v4.app.CoreComponentFactory
+    implementation 'com.android.support:support-core-utils:28.0.0'
     implementation 'com.android.support:mediarouter-v7:28.0.0'
 
     // Kotlin stuff

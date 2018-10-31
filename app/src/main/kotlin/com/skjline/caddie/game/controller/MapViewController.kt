@@ -67,7 +67,7 @@ class MapViewController(private val map: GoogleMap) : ViewController {
     }
 
     // todo: poc - need to rework this
-    fun onLocationChanged() : Observable<Location> {
+    fun onLocationChanged(): Observable<Location> {
         return Observable.create<Location> { emitter ->
 
             listener = listener ?: object : OnPositionUpdated {
@@ -111,13 +111,12 @@ class MapViewController(private val map: GoogleMap) : ViewController {
             position(LatLng(geo.latitude, geo.longitude))
             icon(BitmapDescriptorFactory.fromBitmap(bitmap))
 
-
-            val line =
-                    PolylineOptions()
-                            .add(LatLng(geo.latitude, geo.longitude), LatLng(anchor?.latitude!!, anchor?.longitude!!))
-                            .color(Color.RED)
-                            .width(5.0f)
-            map.addPolyline(line)
+            anchor?.let {
+                map.addPolyline(PolylineOptions()
+                        .add(LatLng(geo.latitude, geo.longitude), LatLng(it?.latitude!!, it?.longitude!!))
+                        .color(Color.RED)
+                        .width(5.0f))
+            }
         }
 
         map.addMarker(option)
